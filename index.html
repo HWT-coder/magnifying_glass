@@ -107,10 +107,11 @@
     mask.style.left = distance_x + 'px'
     mask.style.top = distance_y + 'px'
 
-    // 放大1.8倍左右,背景图左移、上移
-    bigBox.style.backgroundSize = smallbox.offsetWidth * 1.7 + 'px ' + smallbox.offsetHeight * 1.8 + 'px'
-    bigBox.style.backgroundPositionX = -distance_x + 'px'
-    bigBox.style.backgroundPositionY = -distance_y + 'px'
+    // 放大3倍左右,背景图左移、上移
+    bigBox.style.backgroundSize = smallbox.offsetWidth * 3 + 'px ' + smallbox.offsetHeight * 3 + 'px'
+    // 背景图移动距离也要加倍
+    bigBox.style.backgroundPositionX = -distance_x * 3.5 + 'px'
+    bigBox.style.backgroundPositionY = -distance_y * 3 + 'px'
 
   }
 </script>
