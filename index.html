@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>放带镜</title>
+</head>
+<style>
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .smallbox {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin-right: 16px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border: 1px solid #e7e7e7;
+  }
+
+  .smallbox>img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mask {
+    position: absolute;
+    cursor: move;
+    visibility: hidden;
+    width: 150px;
+    height: 150px;
+    background: rgba(128, 115, 53, 0.7);
+  }
+
+  .bigImg-box {
+    width: 350px;
+    height: 400px;
+    overflow: hidden;
+    visibility: hidden;
+    box-sizing: border-box;
+    border: 1px solid #e7e7e7;
+    /* background-size: 100% 100%; */
+    background-image: url('./public/static/computer_big.jpg');
+    background-repeat: no-repeat;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <!-- 小图 -->
+    <div class="smallbox">
+      <img src="./public/static/computer_small.jpg" alt="小图">
+      <!-- 遮罩 -->
+      <div class="mask"></div>
+    </div>
+
+    <!-- 大图 -->
+    <div class="bigImg-box"></div>
+  </div>
+  </div>
+</body>
+
+<script>
+  // 小盒子
+  const smallbox = document.querySelector('.smallbox')
+  // 大盒子
+  const bigBox = document.querySelector('.bigImg-box')
+  // 遮罩层
+  const mask = document.querySelector('.mask')
+  // 遮罩层中心
+  const mask_center_x = mask.offsetWidth / 2
+  const mask_center_y = mask.offsetHeight / 2
+  // 小盒子边界
+  const smallbox_scope_x = smallbox.offsetWidth - mask.offsetWidth
+  const smallbox_scope_y = smallbox.offsetHeight - mask.offsetHeight
+
+  // 为小盒子绑定鼠标移入事件
+  smallbox.onmouseenter = function(e) {
+    mask.style.visibility = 'visible'
+    bigBox.style.visibility = 'visible'
+  }
+  // 为小盒子绑定鼠标移出事件
+  smallbox.onmouseleave = function(e) {
+    mask.style.visibility = 'hidden'
+    bigBox.style.visibility = 'hidden'
+  }
+  // 为小盒子绑定鼠标移动事件
+  smallbox.onmousemove = function(e) {
+    // console.log('触发鼠标移动事件：', e)
+    // 判断鼠标的距离内部距离与遮罩层中心的大小
+    var distance_x = e.pageX - mask_center_x
+    var distance_y = e.pageY - mask_center_y
+    // 限定边界移动, 最小为0，最大不超过边界
+    if (distance_x < 0) distance_x = 0
+    if (distance_x > smallbox_scope_x) distance_x = smallbox_scope_x
+    if (distance_y < 0) distance_y = 0
+    if (distance_y > smallbox_scope_y) distance_y = smallbox_scope_y
+
+    // 赋值给遮罩层、大图让其跟随鼠标移动
+    mask.style.left = distance_x + 'px'
+    mask.style.top = distance_y + 'px'
+
+    // 放大1.8倍左右,背景图左移、上移
+    bigBox.style.backgroundSize = smallbox.offsetWidth * 1.7 + 'px ' + smallbox.offsetHeight * 1.8 + 'px'
+    bigBox.style.backgroundPositionX = -distance_x + 'px'
+    bigBox.style.backgroundPositionY = -distance_y + 'px'
+
+  }
+</script>
+
+</html>
